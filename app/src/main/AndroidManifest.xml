@@ -16,6 +16,9 @@
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".CategoryAddActivity"
+            android:exported="false" />
+        <activity
             android:name=".DashboardAdminActivity"
             android:exported="false" />
         <activity
@@ -27,7 +30,7 @@
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
-        <activity android:name=".SplashActivity"/>
+        <activity android:name=".SplashActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -37,7 +40,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

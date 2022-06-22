@@ -129,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(new Intent(LoginActivity.this, DashboardUserActivity.class));
                         finish();
                     }
-                    else if (userType.equals("addmin")){
+                    else if (userType.equals("admin")){
                         //this is admin, open admin dashboard
                         startActivity(new Intent(LoginActivity.this, DashboardAdminActivity.class));
                         finish();
