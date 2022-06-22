@@ -16,6 +16,9 @@
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".PdfAddActivity"
+            android:exported="false" />
+        <activity
             android:name=".CategoryAddActivity"
             android:exported="false" />
         <activity
