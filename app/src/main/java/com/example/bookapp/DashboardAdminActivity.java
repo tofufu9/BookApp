@@ -3,15 +3,15 @@ package com.example.bookapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 
+import com.example.bookapp.adapters.AdapterCategory;
 import com.example.bookapp.databinding.ActivityDashboardAdminBinding;
-import com.example.bookapp.databinding.ActivityLoginBinding;
+import com.example.bookapp.models.ModelCategory;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -107,7 +107,7 @@ public class DashboardAdminActivity extends AppCompatActivity {
 
                         categoryArrayList.add(model);
                     }
-                    adapterCategory = new com.example.bookapp.AdapterCategory(DashboardAdminActivity.this, categoryArrayList);
+                    adapterCategory = new AdapterCategory(DashboardAdminActivity.this, categoryArrayList);
 
                     binding.categoriesRv.setAdapter(adapterCategory);
 

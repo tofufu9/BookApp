@@ -1,4 +1,4 @@
-package com.example.bookapp;
+package com.example.bookapp.models;
 public  class ModelCategory {
     String id, category, uid;
     long timestamp;
