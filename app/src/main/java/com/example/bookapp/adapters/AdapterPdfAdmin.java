@@ -2,8 +2,12 @@ package com.example.bookapp.adapters;
 
 import static com.example.bookapp.Constants.MAX_BYTES_PDF;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.app.appsearch.StorageInfo;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.provider.ContactsContract;
 import android.text.Layout;
 import android.util.Log;
@@ -21,6 +25,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookapp.MyApplication;
+import com.example.bookapp.PdfDetailActivity;
+import com.example.bookapp.PdfEditActivity;
 import com.example.bookapp.databinding.RowPdfAdminBinding;
 import com.example.bookapp.filters.FilterPdfAdmin;
 import com.example.bookapp.models.ModelPdf;
@@ -55,11 +61,19 @@ public class AdapterPdfAdmin extends RecyclerView.Adapter<AdapterPdfAdmin.Holder
 
     private static final String TAG = "PDF_ADAPTER_TAG";
 
+    //progress
+    private ProgressDialog progressDialog;
+
     //constructor
     public AdapterPdfAdmin(Context context, ArrayList<ModelPdf> pdfArrayList) {
         this.context = context;
         this.pdfArrayList = pdfArrayList;
         this.filterList = pdfArrayList;
+
+        //init progress dialog
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setTitle("Please wait");
+        progressDialog.setCanceledOnTouchOutside(false);
     }
 
     @NonNull
@@ -77,8 +91,11 @@ public class AdapterPdfAdmin extends RecyclerView.Adapter<AdapterPdfAdmin.Holder
 
         //get data
         ModelPdf model = pdfArrayList.get(position);
+        String pdfId = model.getId();
+        String categoryId = model.getCategoryId();
         String title = model.getTitle();
         String description = model.getDescription();
+        String pdfUrl = model.getUrl();
         long timestamp = model.getTimestamp();
         // We need to convert timestamp to dd/mm/YYYY
         String formattedDate = MyApplication.formatTimestamp(timestamp);
@@ -88,125 +105,59 @@ public class AdapterPdfAdmin extends RecyclerView.Adapter<AdapterPdfAdmin.Holder
         holder.descriptionTv.setText(description);
         holder.dateTv.setText(formattedDate);
 
+        //we will need these functions many time, so instead of writing again and move them to My Application class and make static to use later
         //load further details like category, pdf from url, pdf size in seperate functions
-        loadCategory(model, holder);
-        loadPdfFromUrl(model, holder);
-        loadPdfSize(model, holder);
+        MyApplication.loadCategory(""+categoryId, holder.categoryTv);
+        MyApplication.loadPdfFromUrlSinglePage(""+pdfUrl,""+title,holder.pdfView,holder.progressBar);
+        MyApplication.loadPdfSize(""+pdfUrl,""+title,holder.sizeTv);
+        //handle click, show dialog with options 1) Edit , 2) Delete
+        holder.moreBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public  void onClick(View v){
+                moreOptionsDialog(model, holder);
+            }
+        });
+
+        //handle book/pdf click, open pdf details page, pass pdf/book id to get details of it
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, PdfDetailActivity.class);
+                intent.putExtra("bookId", pdfId);
+                context.startActivity(intent);
+            }
+        });
     }
 
-    private void loadPdfSize(ModelPdf model, HolderPdfAdmin holder) {
-        //using url we can get file and its metadata from firebase storage
+    //handle click, show dialog with options 1) Edit, 2) Delete
+    private void moreOptionsDialog(ModelPdf model, HolderPdfAdmin holder) {
+        String bookId = model.getId();
+        String bookUrl = model.getUrl();
+        String bookTitle = model.getTitle();
 
-        String pdfUrl = model.getUrl();
+        //options to show in dialog
+        String[] options = {"Edit", "Delete"};
 
-        StorageReference ref = FirebaseStorage.getInstance().getReferenceFromUrl(pdfUrl);
-        ref.getMetadata()
-                .addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
+        //alert dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Choose Options")
+                .setItems(options, new DialogInterface.OnClickListener(){
                     @Override
-                    public void onSuccess(StorageMetadata storageMetadata) {
-                        //get size in bytes
-                        double bytes = storageMetadata.getSizeBytes();
-                        Log.d(TAG, "onSuccess: "+model.getTitle()+" " +bytes);
+                    public void onClick(DialogInterface dialog, int which){
+                        //handle dialog option click
+                        if (which == 0){
+                            //Edit clicked, open PdfEditActivity to edit the book info
+                            Intent intent = new Intent(context, PdfEditActivity.class);
+                            intent.putExtra("bookId", bookId);
+                            context.startActivity(intent);
 
-                        //convert bytes to KBs, MBs
-                        double kb = bytes/1024;
-                        double mb = kb/1024;
-
-                        if(mb >= 1){
-                            holder.sizeTv.setText(String.format("%.2f", mb)+ " MB");
-                        } else if (kb >= 1){
-                            holder.sizeTv.setText(String.format("%.2f", kb)+ " KB");
-                        } else {
-                            holder.sizeTv.setText(String.format("%.2f", bytes)+ " bytes");
                         }
-
+                        else if (which == 1){
+                            //Delete clicked
+                            MyApplication.deleteBook(context,""+bookId,""+bookUrl,""+bookTitle);
+                        }
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        //failed getting meta data
-                    Log.d(TAG, "onFailure: "+e.getMessage());
-                    }
-                });
-    }
-
-    private void loadPdfFromUrl(ModelPdf model, HolderPdfAdmin holder) {
-        //using url we can get file and its metadata from firebase storage
-
-        String pdfUrl = model.getUrl();
-        StorageReference ref = FirebaseStorage.getInstance().getReferenceFromUrl(pdfUrl);
-        ref.getBytes(MAX_BYTES_PDF)
-                .addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                    @Override
-                    public void onSuccess(byte[] bytes) {
-                    Log.d(TAG, "onSuccess: "+model.getTitle()+ " successfully get the file");
-
-                    //set to pdfview
-                        holder.pdfView.fromBytes(bytes)
-                                .pages(0) //show only first page
-                                .spacing(0)
-                                .swipeHorizontal(false)
-                                .enableSwipe(false)
-                                .onError(new OnErrorListener() {
-                                    @Override
-                                    public void onError(Throwable t) {
-                                        //hide progress
-                                        holder.progressBar.setVisibility(View.INVISIBLE);
-                                        Log.d(TAG, "onError: "+t.getMessage());
-                                    }
-                                })
-                                .onPageError(new OnPageErrorListener() {
-                                    @Override
-                                    public void onPageError(int page, Throwable t) {
-                                        //hide progress
-                                        holder.progressBar.setVisibility(View.INVISIBLE);
-                                        Log.d(TAG, "onPageError: "+t.getMessage());
-                                    }
-                                })
-                                .onLoad(new OnLoadCompleteListener() {
-                                    @Override
-                                    public void loadComplete(int nbPages) {
-                                        //pdf loaded
-                                        //hide progress
-                                        holder.progressBar.setVisibility(View.INVISIBLE);
-                                        Log.d(TAG, "loadComplete: pdf loaded");
-                                    }
-                                })
-                                .load();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        //hide progress
-                        holder.progressBar.setVisibility(View.INVISIBLE);
-                        Log.d(TAG, "onFailure: failed getting file from url due to "+e.getMessage());
-                    }
-                });
-    }
-
-    private void loadCategory(ModelPdf model, HolderPdfAdmin holder) {
-        //get category using categoryId
-
-        String categoryId = model.getCategoryId();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Categories");
-        ref.child(categoryId)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        //get category
-                        String category = ""+snapshot.child("category").getValue();
-
-                        //set to category text view
-                        holder.categoryTv.setText(category);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+                }).show();
     }
 
     @Override

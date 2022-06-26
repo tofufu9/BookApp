@@ -3,7 +3,7 @@ package com.example.bookapp.models;
 public class ModelPdf {
     //variables
     String uid, id, title, description, categoryId, url;
-        long timestamp;
+        long timestamp, viewsCount, downloadsCount;
 
         //empty constructor, required for firebase
         public ModelPdf(){
@@ -11,7 +11,8 @@ public class ModelPdf {
         }
 
         //constructor with all params
-    public ModelPdf(String uid, String id, String title, String description, String categoryId, String url, long timestamp){
+
+    public ModelPdf(String uid, String id, String title, String description, String categoryId, String url, long timestamp, long viewsCount, long downloadsCount) {
         this.uid = uid;
         this.id = id;
         this.title = title;
@@ -19,7 +20,10 @@ public class ModelPdf {
         this.categoryId = categoryId;
         this.url = url;
         this.timestamp = timestamp;
+        this.viewsCount = viewsCount;
+        this.downloadsCount = downloadsCount;
     }
+
 
     /*---Getter/Setters---*/
 
@@ -77,5 +81,21 @@ public class ModelPdf {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public long getViewsCount() {
+        return viewsCount;
+    }
+
+    public void setViewsCount(long viewsCount) {
+        this.viewsCount = viewsCount;
+    }
+
+    public long getDownloadsCount() {
+        return downloadsCount;
+    }
+
+    public void setDownloadsCount(long downloadsCount) {
+        this.downloadsCount = downloadsCount;
     }
 }
