@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/back01"
     android:padding="20dp"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
     <ImageView
         android:id="@+id/iconIv"

@@ -13,7 +13,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.bookapp.PdfListAdminActivity;
+import com.example.bookapp.activities.PdfListAdminActivity;
 import com.example.bookapp.filters.FilterCategory;
 import com.example.bookapp.models.ModelCategory;
 import com.example.bookapp.databinding.RowCategoryBinding;
