@@ -1,6 +1,5 @@
-package com.example.bookapp;
+package com.example.bookapp.activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
@@ -11,8 +10,6 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.bookapp.databinding.ActivityLoginBinding;
-import com.example.bookapp.databinding.ActivityMainBinding;
 import com.example.bookapp.databinding.ActivityRegisterBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
