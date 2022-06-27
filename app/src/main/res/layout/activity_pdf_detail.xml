@@ -34,7 +34,7 @@
     </RelativeLayout>
     <!-- All Content under scrollview-->
     <ScrollView
-        android:layout_above="@id/readBookBtn"
+        android:layout_above="@id/bookOptionsLl"
         android:layout_below="@id/toolbarRl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -206,14 +206,35 @@
 
     </ScrollView>
 
+
+    <!--Layout for button at bottom-->
+    <LinearLayout
+        android:id="@+id/bookOptionsLl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+
     <!--Button: Open to view pdf-->
     <Button
         android:id="@+id/readBookBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_weight="1"
         android:drawableTop="@drawable/ic_book_white"
         android:text="Read"
         android:background="@color/design_default_color_primary"/>
+
+        <!--Button: download pdf-->
+        <Button
+            android:id="@+id/downloadBookBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_download_white"
+            android:text="Download"
+            android:background="@color/design_default_color_primary"/>
+
+    </LinearLayout>
 
 </RelativeLayout>
