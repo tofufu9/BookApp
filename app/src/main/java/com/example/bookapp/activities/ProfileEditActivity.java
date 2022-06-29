@@ -292,7 +292,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                         Log.d(TAG, "onActivityResult: "+imageUri);
                         Intent data = result.getData(); //no need here as in camera case we already have image in imageUri variable
                         imageUri = data.getData();
-                        Log.d(TAG, "onACtivityResult: Picked from Gallery " +imageUri);
+                        Log.d(TAG, "onActivityResult: Picked from Gallery " +imageUri);
                         binding.profileTv.setImageURI(imageUri);
                     } else {
                         Toast.makeText(ProfileEditActivity.this, "Cancelled", Toast.LENGTH_SHORT).show();

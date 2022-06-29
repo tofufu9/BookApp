@@ -100,7 +100,7 @@ public class ProfileActivity extends AppCompatActivity {
         //Alert dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Verify Email")
-                .setMessage("Are you sure you want to send email verification instructions to your email"+firebaseUser.getEmail())
+                .setMessage("Are you sure you want to send email verification instructions to your email "+firebaseUser.getEmail())
                 .setPositiveButton("SEND", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

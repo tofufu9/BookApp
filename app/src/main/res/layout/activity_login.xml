@@ -101,8 +101,7 @@
                 android:layout_marginTop="5dp"
                 android:padding="5dp"
                 android:text="Forgot Password?"
-                android:textColor="@color/gray02"
-                />
+                android:textColor="@color/gray02" />
 
             <!--Login Button-->
             <Button
