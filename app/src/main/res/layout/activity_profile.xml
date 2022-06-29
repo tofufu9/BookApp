@@ -98,7 +98,7 @@
 
         <!--Account Information-->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
@@ -109,14 +109,18 @@
                 android:layout_height="wrap_content"
                 android:text="Account"
                 android:textColor="@color/black"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:textSize="12sp"/>
 
             <TextView
                 android:id="@+id/accountTypeTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="N/A"
-                android:textColor="@color/black"/>
+                android:text="User"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:textSize="12sp"/>
         </LinearLayout>
 
         <!--Member Since-->
@@ -132,14 +136,18 @@
                 android:layout_height="wrap_content"
                 android:text="Member"
                 android:textColor="@color/black"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:textSize="12sp"/>
 
             <TextView
                 android:id="@+id/memberDateTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="N/A"
-                android:textColor="@color/black"/>
+                android:text="12/12/2021"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:textSize="12sp"/>
         </LinearLayout>
         <!--Favorite Books Count-->
         <LinearLayout
@@ -154,15 +162,49 @@
                 android:layout_height="wrap_content"
                 android:text="Favorite Book"
                 android:textColor="@color/black"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:textSize="12sp"/>
 
             <TextView
                 android:id="@+id/favoriteBookCountTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="N/A"
-                android:textColor="@color/black"/>
+                android:text="142"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:textSize="12sp"/>
         </LinearLayout>
+
+        <!--Account Status-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Account Status"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/accountStatusTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not Verified"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+
     </LinearLayout>
     <View
         android:layout_marginTop="8dp"
