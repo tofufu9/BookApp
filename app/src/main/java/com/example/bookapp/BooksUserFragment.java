@@ -30,7 +30,7 @@ import java.util.ArrayList;
  */
 public class BooksUserFragment extends Fragment {
 
-    //that wee passed while creating instance of this fragment
+    //that we passed while creating instance of this fragment
     private String  categoryId;
     private String category;
     private String uid;
@@ -55,6 +55,7 @@ public class BooksUserFragment extends Fragment {
         args.putString("categoryId", categoryId);
         args.putString("category", category);
         args.putString("uid", uid);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -139,7 +140,7 @@ public class BooksUserFragment extends Fragment {
                 //setup adapter
                 adapterPdfUser = new AdapterPdfUser(getContext(), pdfArrayList);
                 //set adapter to recyclerview
-                binding.bookRv.setAdapter(adapterPdfUser);
+                binding.booksRv.setAdapter(adapterPdfUser);
             }
 
             @Override
@@ -168,7 +169,7 @@ public class BooksUserFragment extends Fragment {
                 //setup adapter
                 adapterPdfUser = new AdapterPdfUser(getContext(), pdfArrayList);
                 //set adapter to recyclerview
-                binding.bookRv.setAdapter(adapterPdfUser);
+                binding.booksRv.setAdapter(adapterPdfUser);
             }
 
             @Override
@@ -197,7 +198,7 @@ public class BooksUserFragment extends Fragment {
                         //setup adapter
                         adapterPdfUser = new AdapterPdfUser(getContext(), pdfArrayList);
                         //set adapter to recyclerview
-                        binding.bookRv.setAdapter(adapterPdfUser);
+                        binding.booksRv.setAdapter(adapterPdfUser);
                     }
 
                     @Override
