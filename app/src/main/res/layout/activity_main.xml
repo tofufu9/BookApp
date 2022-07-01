@@ -45,5 +45,5 @@
         android:layout_alignParentBottom="true"
         android:background="@drawable/shape_button02"
         android:text="Continue Without Login"
-        android:textColor="@color/purple_500"/>
+        android:textColor="@color/purple_500" />
 </RelativeLayout>

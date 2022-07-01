@@ -91,7 +91,8 @@ public class AdapterPdfAdmin extends RecyclerView.Adapter<AdapterPdfAdmin.Holder
         //we will need these functions many time, so instead of writing again and move them to My Application class and make static to use later
         //load further details like category, pdf from url, pdf size in seperate functions
         MyApplication.loadCategory(""+categoryId, holder.categoryTv);
-        MyApplication.loadPdfFromUrlSinglePage(""+pdfUrl,""+title,holder.pdfView,holder.progressBar);
+        //we don't need page number here, pass null
+        MyApplication.loadPdfFromUrlSinglePage(""+pdfUrl,""+title,holder.pdfView,holder.progressBar, null);
         MyApplication.loadPdfSize(""+pdfUrl,""+title,holder.sizeTv);
         //handle click, show dialog with options 1) Edit , 2) Delete
         holder.moreBtn.setOnClickListener(new View.OnClickListener(){
