@@ -13,8 +13,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
@@ -22,9 +24,11 @@ import android.widget.Toast;
 import com.example.bookapp.MyApplication;
 import com.example.bookapp.R;
 import com.example.bookapp.adapters.AdapterComment;
+import com.example.bookapp.adapters.AdapterPdfFavorite;
 import com.example.bookapp.databinding.ActivityPdfDetailBinding;
 import com.example.bookapp.databinding.DialogCommentAddBinding;
 import com.example.bookapp.models.ModelComment;
+import com.example.bookapp.models.ModelPdf;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -81,7 +85,8 @@ public class PdfDetailActivity extends AppCompatActivity {
         }
 
         loadBookDetails();
-loadComments();
+
+        loadComments();
         //handle click, goto previous activity
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,6 +151,8 @@ loadComments();
         });
 
     }
+
+
 
     private void loadComments() {
         // init ArrayList before adding data into it
