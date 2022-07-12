@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.bookapp.MyApplication;
 import com.example.bookapp.R;
 import com.example.bookapp.adapters.AdapterPdfFavorite;
@@ -67,14 +68,15 @@ public class ProfileActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         //get current user
         firebaseUser = firebaseAuth.getCurrentUser();
+        loadUserInfo();
+        loadFavoriteBooks();
 
         //init/setup progress dialog
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please wait");
         progressDialog.setCanceledOnTouchOutside(false);
 
-        loadUserInfo();
-        loadFavoriteBooks();
+
 
         //handle click, start profile edit page
         binding.profileEditBtn.setOnClickListener(new View.OnClickListener() {
@@ -190,7 +192,7 @@ public class ProfileActivity extends AppCompatActivity {
                         Glide.with(ProfileActivity.this)
                                 .load(profileImage)
                                 .placeholder(R.drawable.ic_person_gray)
-                                .into(binding.profileTv);
+                                .into(binding.profileIv);
                     }
 
                     @Override
@@ -229,7 +231,7 @@ public class ProfileActivity extends AppCompatActivity {
                         binding.favoriteBookCountTv.setText(""+pdfArrayList.size());//can't set int/long to textview so concatnate with string
                         //setup adapter
                         adapterPdfFavorite = new AdapterPdfFavorite(ProfileActivity.this, pdfArrayList);
-                        //set adapter to recycleview
+                        //set adapter to recycle view
                         binding.booksRv.setAdapter(adapterPdfFavorite);
 
 

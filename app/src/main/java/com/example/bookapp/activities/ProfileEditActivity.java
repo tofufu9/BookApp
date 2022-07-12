@@ -84,7 +84,7 @@ public class ProfileEditActivity extends AppCompatActivity {
         });
 
         //handle click, pick image
-        binding.profileTv.setOnClickListener(new View.OnClickListener() {
+        binding.profileIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showImageAttachMenu();
@@ -191,7 +191,7 @@ public class ProfileEditActivity extends AppCompatActivity {
 
     private void showImageAttachMenu() {
         //init/setup popup menu
-        PopupMenu popupMenu = new PopupMenu(this, binding.profileTv);
+        PopupMenu popupMenu = new PopupMenu(this, binding.profileIv);
         popupMenu.getMenu().add(Menu.NONE, 0, 0, "Camera");
         popupMenu.getMenu().add(Menu.NONE, 0, 0, "Gallery");
         
@@ -216,6 +216,8 @@ public class ProfileEditActivity extends AppCompatActivity {
         });
     }
     private void loadUserInfo() {
+        Log.d(TAG, "loadUserInfo: Loading user info of user "+ firebaseAuth.getUid());
+
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
         reference.child(firebaseAuth.getUid())
                 .addValueEventListener(new ValueEventListener() {
@@ -239,7 +241,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                         Glide.with(ProfileEditActivity.this)
                                 .load(profileImage)
                                 .placeholder(R.drawable.ic_person_gray)
-                                .into(binding.profileTv);
+                                .into(binding.profileIv);
                     }
 
                     @Override
@@ -257,12 +259,15 @@ public class ProfileEditActivity extends AppCompatActivity {
         imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
 
         Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         galleryActivityResultLauncher.launch(intent);
     }
 
     private void pickImageGallery() {
         //intent to pick image from gallery
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        galleryActivityResultLauncher.launch(intent);
     }
         private ActivityResultLauncher<Intent> cameraActivityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -275,7 +280,10 @@ public class ProfileEditActivity extends AppCompatActivity {
                             Log.d(TAG, "onActivityResult: "+imageUri);
                             Intent data = result.getData(); //no need here as in camera case we already have image in imageUri variable
 
-                            binding.profileTv.setImageURI(imageUri);
+                            binding.profileIv.setImageURI(imageUri);
+                        }
+                        else{
+                            Toast.makeText(ProfileEditActivity.this, "Cancelled", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -293,7 +301,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                         Intent data = result.getData(); //no need here as in camera case we already have image in imageUri variable
                         imageUri = data.getData();
                         Log.d(TAG, "onActivityResult: Picked from Gallery " +imageUri);
-                        binding.profileTv.setImageURI(imageUri);
+                        binding.profileIv.setImageURI(imageUri);
                     } else {
                         Toast.makeText(ProfileEditActivity.this, "Cancelled", Toast.LENGTH_SHORT).show();
                     }

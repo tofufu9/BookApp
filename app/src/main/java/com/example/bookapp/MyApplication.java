@@ -292,7 +292,7 @@ public class MyApplication extends Application {
     Log.d(TAG_DOWNLOAD, "saveDownloadedBook: Saving downloaded book");
     try{
         File downloadsFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        downloadsFolder.mkdir();
+        downloadsFolder.mkdirs();
 
         String filePath = downloadsFolder.getPath() + "/" + nameWithExtension;
         FileOutputStream out = new FileOutputStream(filePath);
@@ -360,6 +360,36 @@ public class MyApplication extends Application {
                 });
     }
 
+    public static void loadPdfPageCount(Context context, String pdfUrl, TextView pagesTv){
+        //load pdf file from firebase storage using url
+        StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(pdfUrl);
+        storageReference
+                .getBytes(MAX_BYTES_PDF)
+                .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                    // file received
+
+
+                        // load pdf pages using PDFView Library
+                        PDFView pdfView = new PDFView(context, null);
+                        pdfView.fromBytes(bytes)
+                                .onLoad(new OnLoadCompleteListener() {
+                                    @Override
+                                    public void loadComplete(int nbPages) {
+                                        // pdf completed from bytes we got from firebase storage, we can now show number of pages
+                                        pagesTv.setText(""+nbPages);
+                                    }
+                                });
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // file failed to preview
+                    }
+                });
+    }
     public static void addToFavorite(Context context, String bookId){
         //we can add only if user is logged in
         //1)Check if user is logged in

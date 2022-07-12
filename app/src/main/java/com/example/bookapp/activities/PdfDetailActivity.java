@@ -56,7 +56,8 @@ public class PdfDetailActivity extends AppCompatActivity {
     private static final String TAG_DOWNLOAD = "DOWNLOAD_TAG";
 
     private ProgressDialog progressDialog;
-
+    // Array List to hold Books
+    private ArrayList<ModelPdf> pdfArrayList;
     // ArrayList to hold comment
     private ArrayList<ModelComment> commentArrayList;
     // Adapter to set to RecyclerView
@@ -85,7 +86,8 @@ public class PdfDetailActivity extends AppCompatActivity {
         }
 
         loadBookDetails();
-
+        // increment book view count , whenever this page starts
+        MyApplication.incrementBookViewCount(bookId);
         loadComments();
         //handle click, goto previous activity
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +115,7 @@ public class PdfDetailActivity extends AppCompatActivity {
                     Log.d(TAG_DOWNLOAD, "onclick: Permission already granted, can download book");
                     MyApplication.downloadBook(PdfDetailActivity.this, "" + bookId, "" + bookTitle, "" + bookUrl);
                 } else {
-                    Log.d(TAG_DOWNLOAD, "onClick: Permission was not granted, request permisison...");
+                    Log.d(TAG_DOWNLOAD, "onClick: Permission was not granted, request permission...");
                     requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
                 }
             }
@@ -151,7 +153,6 @@ public class PdfDetailActivity extends AppCompatActivity {
         });
 
     }
-
 
 
     private void loadComments() {
@@ -265,7 +266,7 @@ public class PdfDetailActivity extends AppCompatActivity {
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
                     Log.d(TAG_DOWNLOAD, "Permission Granted");
-                    MyApplication.downloadBook(this, "" + bookId, "" + bookTitle, "" + bookUrl);
+                    MyApplication.downloadBook(this, "" + bookId, "" + bookTitle, "" +bookUrl);
                 } else {
                     Log.d(TAG_DOWNLOAD, "Permission was denied...: ");
                     Toast.makeText(this, "Permission was denied...", Toast.LENGTH_SHORT).show();
@@ -284,7 +285,7 @@ public class PdfDetailActivity extends AppCompatActivity {
                         String categoryId = "" + snapshot.child("categoryId").getValue();
                         String viewsCount = "" + snapshot.child("viewsCount").getValue();
                         String downloadsCount = "" + snapshot.child("downloadsCount").getValue();
-                        String bookUrl = "" + snapshot.child("url").getValue();
+                        bookUrl = "" + snapshot.child("url").getValue();
                         String timestamp = "" + snapshot.child("timestamp").getValue();
 
                         //required data is loaded, shown download button
@@ -296,6 +297,7 @@ public class PdfDetailActivity extends AppCompatActivity {
                         MyApplication.loadCategory("" + categoryId, binding.categoryTv);
                         MyApplication.loadPdfFromUrlSinglePage("" + bookUrl, "" + bookTitle, binding.pdfView, binding.progressBar, binding.pagesTv);
                         MyApplication.loadPdfSize("" + bookUrl, "" + bookTitle, binding.sizeTv);
+                        MyApplication.loadPdfPageCount(PdfDetailActivity.this,""+bookUrl, binding.pagesTv);
 
                         //set data
                         binding.titleTv.setText(bookTitle);

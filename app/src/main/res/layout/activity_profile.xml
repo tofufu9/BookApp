@@ -57,7 +57,7 @@
 
     <!-- Shapeable image view with rounded corners for profile image -->
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/profileTv"
+        android:id="@+id/profileIv"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_centerHorizontal="true"
@@ -70,7 +70,7 @@
         android:id="@+id/nameTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/profileTv"
+        android:layout_below="@+id/profileIv"
         android:layout_marginTop="8dp"
         android:text="Full Name"
         android:layout_centerHorizontal="true"

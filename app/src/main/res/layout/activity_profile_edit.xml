@@ -35,12 +35,12 @@
 
         <!--Shapeable image view with rounded corners for profile imagee-->
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/profileTv"
+            android:id="@+id/profileIv"
             android:layout_width="110dp"
             android:layout_height="110dp"
+            android:layout_below="@id/titleTv"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40dp"
-            android:layout_below="@id/titleTv"
             android:background="@color/white"
             android:src="@drawable/ic_person_gray"
             app:shapeAppearance="@style/styleRoundeCornersImage" />

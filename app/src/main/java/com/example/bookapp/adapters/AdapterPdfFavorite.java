@@ -60,7 +60,7 @@ public class AdapterPdfFavorite extends RecyclerView.Adapter<AdapterPdfFavorite.
         //handle click, open pdf details page, already done in previous videos
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 Intent intent = new Intent(context, PdfDetailActivity.class);
                 intent.putExtra("bookId", model.getId()); //pass book id not category id
                 context.startActivity(intent);
@@ -71,7 +71,7 @@ public class AdapterPdfFavorite extends RecyclerView.Adapter<AdapterPdfFavorite.
         //handle click, remove from favorite
         holder.removeFavBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 MyApplication.removeFromFavorite(context, model.getId()); //pass book id not category id
             }
         });
